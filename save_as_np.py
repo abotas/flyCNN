@@ -2,12 +2,14 @@ import numpy as np
 from glob import glob
 from keras.preprocessing.image import load_img, img_to_array
 
-filenames = glob('female_ventral/*.png')
-outpath   = 'ndarrays/fvent277.npy'
+filenames = glob('md/*.png')
 
-image_shape = 227, 227, 3
+image_shape = 299, 299, 3
+outpath   = 'ndarrays/mdors{}.npy'.format(image_shape[0])
+print('**** Preparing to save to ' + outpath +' ****')
 
 def image_to_theano_np(filenames, image_shape):
+    """Converts images of select size to numpy arrays"""
 
     pics = []
     percent_done = [10 * i for i in range(1, 11)]
@@ -26,5 +28,5 @@ def image_to_theano_np(filenames, image_shape):
 
 pics, dropped = image_to_theano_np(filenames, image_shape)
 np.save(outpath, pics)
-print(str(dropped / len(filenames)) + '% incompatible size')
-print('Saved flies:', len(pics))
+print(str(dropped / len(filenames) * 100) + '% incompatible size')
+print('Saved ' + str(len(pics)) + ' flies at ' + outpath)
